@@ -316,3 +316,8 @@ Singleton objects should use a thread-safe pattern for creating their shared ins
 }
 ```
 This will prevent [possible and sometimes prolific crashes](http://cocoasamurai.blogspot.com/2011/04/singletons-your-doing-them-wrong.html).
+
+Items for further discussion:
+- Moving away from using Nibs.  Not using Storyboards.
+- Core Data changes should always happen on master branch.
+- Commiting code with build warnings.
