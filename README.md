@@ -1,17 +1,8 @@
-# NYTimes Objective-C Style Guide
+# Wedding Party Objective-C Style Guide
 
-This style guide outlines the coding conventions of the iOS team at The New York Times. We welcome your feedback in [issues](https://github.com/NYTimes/objetive-c-style-guide/issues), [pull requests](https://github.com/NYTimes/objetive-c-style-guide/pulls) and [tweets](https://twitter.com/nytimesmobile). Also, [we're hiring](http://jobs.nytco.com/job/New-York-iOS-Developer-Job-NY/2572221/).
+This style guide outlines the coding conventions of the iOS team at Wedding Party. We welcome your feedback in [issues](https://github.com/sprint84/objetive-c-style-guide/issues), and [tweets](https://twitter.com/wedding). Also, [we're hiring](http://weddingpartyapp.com/jobs).
 
-Thanks to all of [our contributors](https://github.com/NYTimes/objective-c-style-guide/contributors).
-
-## Introduction
-
-Here are some of the documents from Apple that informed the style guide. If something isn't mentioned here, it's probably covered in great detail in one of these:
-
-* [The Objective-C Programming Language](http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html)
-* [Cocoa Fundamentals Guide](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/Introduction/Introduction.html)
-* [Coding Guidelines for Cocoa](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html)
-* [iOS App Programming Guide](http://developer.apple.com/library/ios/#documentation/iphone/conceptual/iphoneosprogrammingguide/Introduction/Introduction.html)
+Thanks to The New York Times for sharing their style guide.
 
 ## Table of Contents
 
@@ -167,51 +158,39 @@ Property definitions should be used in place of naked instance variables wheneve
 
 Apple naming conventions should be adhered to wherever possible, especially those related to [memory management rules](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html) ([NARC](http://stackoverflow.com/a/2865194/340508)).
 
-Long, descriptive method and variable names are good.
+Private Methods
+
+All private methods should begin with GT_.  Apple reserves all names begining with a single underscore for it's own use.
 
 **For example:**
-
 ```objc
-UIButton *settingsButton;
+- (void)GT_configTableView
 ```
 
 **Not**
-
 ```objc
-UIButton *setBut;
+- (void)_configTableView
 ```
 
-A three letter prefix (e.g. `NYT`) should always be used for class names and constants, however may be omitted for Core Data entity names. Constants should be camel-case with all words capitalized and prefixed by the related class name for clarity.
-
+All constants should begin with C_ 
 **For example:**
-
 ```objc
-static const NSTimeInterval NYTArticleViewControllerNavigationFadeAnimationDuration = 0.3;
+static const NSString C_SyncState = @"C_SyncState";
 ```
 
 **Not:**
 
 ```objc
-static const NSTimeInterval fadetime = 1.7;
-```
-
-Properties should be camel-case with the leading word being lowercase. **If Xcode can automatically synthesize the variable, then let it.** Otherwise, in order to be consistent, the backing instance variables for these properties should be camel-case with the leading word being lowercase and a leading underscore. This is the same format as Xcode's default synthesis.
-
-**For example:**
-
-```objc
-@synthesize descriptiveVariableName = _descriptiveVariableName;
-```
-
-**Not:**
-
-```objc
-id varnm;
+static const NSString kSyncState = @"C_SyncState";
 ```
 
 ### Underscores
 
 When using properties, instance variables should always be accessed and mutated using `self.`. This means that all properties will be visually distinct, as they will all be prefaced with `self.`. Local variables should not contain underscores.
+
+Using `self.` is the same as calling a setter or getter.  So REMEMBER, you should never use `self.` in a setter or getter.
+
+Always use _ notation to access an ivar in init methods, setters & getters.
 
 ## Comments
 
@@ -221,20 +200,10 @@ Block comments should generally be avoided, as code should be as self-documentin
 
 ## init and dealloc
 
-`dealloc` methods should be placed at the top of the implementation, directly after the `@synthesize` and `@dynamic` statements. `init` should be placed directly below the `dealloc` methods of any class.
-
-`init` methods should be structured like this:
-
-```objc
-- (instancetype)init {
-    self = [super init]; // or call the designated initalizer
-    if (self) {
-        // Custom initialization
-    }
-
-    return self;
-}
-```
+`init` should be placed at the top of the class.
+`view` lifecycle methods should be placed after the `init` methods.
+`dealloc` methods should be placed at the bottom of the implementation.
+`#pragma mark -` should be used to delinate all groups of methods, especially Actions, Delegate methods for any protocol.
 
 ## Literals
 
