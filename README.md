@@ -14,18 +14,16 @@ Thanks to The New York Times for sharing their style guide.
 * [Methods](#methods)
 * [Variables](#variables)
 * [Naming](#naming)
+  * [Private Methods](#private-methods)
   * [Underscores](#underscores)
 * [Comments](#comments)
 * [Init & Dealloc](#init-and-dealloc)
 * [Literals](#literals)
 * [CGRect Functions](#cgrect-functions)
 * [Constants](#constants)
-* [Enumerated Types](#enumerated-types)
 * [Private Properties](#private-properties)
 * [Image Naming](#image-naming)
-* [Booleans](#booleans)
 * [Singletons](#singletons)
-* [Xcode Project](#xcode-project)
 
 ## Dot-Notation Syntax
 
@@ -353,6 +351,14 @@ Singleton objects should use a thread-safe pattern for creating their shared ins
 }
 ```
 This will prevent [possible and sometimes prolific crashes](http://cocoasamurai.blogspot.com/2011/04/singletons-your-doing-them-wrong.html).
+
+## Warnings
+
+The code should should be committed without warnings. That way, when new warnings appear for some reason, it is easier to detect and fix it.
+
+## Core Data Changes
+## Nibs and Storyboards
+
 
 Items for further discussion:
 - Moving away from using Nibs.  Not using Storyboards.
