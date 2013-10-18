@@ -122,7 +122,7 @@ Some of Apple’s APIs write garbage values to the error parameter (if non-NULL)
 
 ## Methods
 
-In method signatures, there should be a space after the scope (-/+ symbol). There should be a space between the method segments.
+In method signatures, there should be exactly **one** space after the scope (-/+ symbol). There should be a space between the method segments. And there should be **no** spaces between the parameter type and the parameter name.
 
 **For Example**:
 ```objc
@@ -134,7 +134,7 @@ Variables should be named as descriptively as possible. Single letter variable n
 
 Asterisks indicating pointers belong with the variable, e.g., `NSString *text` not `NSString* text` or `NSString * text`, except in the case of constants.
 
-Property definitions should be used in place of naked instance variables whenever possible. Direct instance variable access should be avoided except in initializer methods (`init`, `initWithCoder:`, etc…), `dealloc` methods and within custom setters and getters. For more information on using Accessor Methods in Initializer Methods and dealloc, see [here](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmPractical.html#//apple_ref/doc/uid/TP40004447-SW6).
+Property definitions should be used in place of naked instance variables whenever possible.
 
 **For example:**
 
@@ -154,13 +154,32 @@ Property definitions should be used in place of naked instance variables wheneve
 }
 ```
 
+Direct instance variable access should be avoided except in initializer methods (`init`, `initWithCoder:`, etc…), `dealloc` methods and within custom setters and getters. Inside `init` methods, **do not** use `self` unless necessary. For more information on using Accessor Methods in Initializer Methods and dealloc, see [here](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmPractical.html#//apple_ref/doc/uid/TP40004447-SW6).
+
+**For example:**
+
+```objc
+@interface NYTSection: NSObject
+
+- (id)initWithFrame:(CGRect)frame
+{
+    id = [self init];
+    if (self) {
+        _varName = @"Some initial value";
+    }
+    return self;
+}
+
+@end
+```
+ 
 ## Naming
 
 Apple naming conventions should be adhered to wherever possible, especially those related to [memory management rules](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html) ([NARC](http://stackoverflow.com/a/2865194/340508)).
 
-Private Methods
+### Private Methods
 
-All private methods should begin with GT_.  Apple reserves all names begining with a single underscore for it's own use.
+All private methods should begin with `GT_`. Apple reserves all names begining with a single underscore for it's own use.
 
 **For example:**
 ```objc
@@ -172,7 +191,8 @@ All private methods should begin with GT_.  Apple reserves all names begining wi
 - (void)_configTableView
 ```
 
-All constants should begin with C_ 
+All constants should begin with `C_` followed by Camel case.
+
 **For example:**
 ```objc
 static const NSString C_SyncState = @"C_SyncState";
@@ -188,9 +208,24 @@ static const NSString kSyncState = @"C_SyncState";
 
 When using properties, instance variables should always be accessed and mutated using `self.`. This means that all properties will be visually distinct, as they will all be prefaced with `self.`. Local variables should not contain underscores.
 
-Using `self.` is the same as calling a setter or getter.  So REMEMBER, you should never use `self.` in a setter or getter.
+Using `self.` is the same as calling a setter or getter. So REMEMBER, you should never use `self.` inside a custom setter or getter implementation.
 
-Always use _ notation to access an ivar in init methods, setters & getters.
+Always use `_` notation to access an ivar in init methods, setters & getters.
+
+**For example:**
+```objc
+- (NSString *)getName {
+    _name = _firstName;
+}
+```
+
+**Not:**
+
+```objc
+- (NSString *)getName {
+    self.name = _firstName;
+}
+```
 
 ## Comments
 
@@ -202,6 +237,8 @@ Block comments should generally be avoided, as code should be as self-documentin
 
 `init` should be placed at the top of the class.
 `view` lifecycle methods should be placed after the `init` methods.
+Public methods should be placed just after the `view` lifecycle methods, followed by private methods (`GT_`).
+Delegate methods should be placed after the private methods.
 `dealloc` methods should be placed at the bottom of the implementation.
 `#pragma mark -` should be used to delinate all groups of methods, especially Actions, Delegate methods for any protocol.
 
@@ -262,15 +299,15 @@ Constants are preferred over in-line string literals or numbers, as they allow f
 **For example:**
 
 ```objc
-static NSString * const NYTAboutViewControllerCompanyName = @"The New York Times Company";
+static NSString * const C_AboutViewControllerCompanyName = @"Wedding Party";
 
-static const CGFloat NYTImageThumbnailHeight = 50.0;
+static const CGFloat C_ImageThumbnailHeight = 50.0;
 ```
 
 **Not:**
 
 ```objc
-#define CompanyName @"The New York Times Company"
+#define CompanyName @"Wedding Party"
 
 #define thumbnailHeight 2
 ```
